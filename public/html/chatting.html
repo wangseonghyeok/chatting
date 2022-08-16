@@ -25,6 +25,7 @@
       </div>
       <div class="chattingBox">
         <ul class="list">
+          <!--
           <li class="other">
             <div class="profile">
               <img src="../images/man.png" alt="" />
@@ -49,6 +50,7 @@
               </div>
             </div>
           </li>
+          -->
         </ul>
       </div>
       <div class="sendBox">
@@ -72,18 +74,53 @@
     $(".contents .sendBox .btnSend").on("click", function () {
       const chattingItem = { nickName: $("#nickName").val(), msg: $(".sendBox #msg").val() };
       socket.emit("chatting", chattingItem);
+      // 비우기, 노란색 불들어오게 하기...
     });
+    $(".contents .sendBox #msg").on("keydown", function (e) {
+      if (e.keyCode === 13) {
+        if ($("#msg").val().trim() === "") {
+          e.preventDefault();
+          $("#msg").val("");
+          return;
+        }
+      }
+    });
+    $(".contents .sendBox #msg").on("keyup", function (e) {
+      console.log(e);
+      if (e.keyCode === 13) {
+        if ($("#msg").val().trim() === "") {
+          e.preventDefault();
+          $("#msg").val("");
+          return;
+        }
+        const chattingItem = { nickName: $("#nickName").val(), msg: $(".sendBox #msg").val() };
+        socket.emit("chatting", chattingItem);
+        $("#msg").val("");
+        $(".btnSend").removeClass("on");
+      }
+      if ($("#msg").val().trim() !== "") {
+        $(".btnSend").addClass("on");
+      } else {
+        $(".btnSend").removeClass("on");
+      }
+    });
+
     socket.on("chatting", (data) => {
-      $(".chattingBox .list").append(`<li class="other">
+      const meOrOther = data.nickName === $("#nickName").val() ? "me" : "other";
+      $(".chattingBox .list").append(`<li class="${meOrOther}">
             <div class="profile">
               <img src="../images/man.png" alt="" />
-              <span class="name">${data.nickName}</span>
             </div>
             <div class="msgBox">
-              <div class="msg">${data.msg}</div>
-              <div class="time">${data.time}</div>
+              <span class="name">${data.nickName}</span>
+              <div class="inner">
+                <div class="msg">${data.msg}</div>
+                <div class="time">${data.time}</div>
+              </div>
             </div>
           </li>`);
+      // 내용 추가....
+      $(".chattingBox").scrollTop($(".chattingBox .list").height());
     });
   </script>
 </html>
