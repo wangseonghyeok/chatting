@@ -17,7 +17,7 @@ io.on("connection", (socket) => {
   //   io.emit("serverYaho", "나는  클라이언트가 yaho로 보낸 이벤트를 받아서 다시 yaho로 서버가 다시 yaho로 이벤트를 발송하는 것입니다.");
   // });
   socket.on("chatting", (data) => {
-    console.log(data);
+    console.log(data.msg);
     const sendTime = moment(new Date()).format("A hh:mm");
     io.emit("chatting", { nickName: data.nickName, msg: data.msg, time: sendTime });
   });
