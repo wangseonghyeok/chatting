@@ -93,6 +93,8 @@ a {
   border-radius: 5px;
   padding: 10px;
   margin-right: 10px;
+  white-space: pre;
+  line-height: 1.8;
 }
 .chattingBox .list li .msgBox .inner .time {
   font-size: 12px;

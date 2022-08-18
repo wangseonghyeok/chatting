@@ -86,17 +86,21 @@
       }
     });
     $(".contents .sendBox #msg").on("keyup", function (e) {
-      console.log(e);
+      //console.log(e);
       if (e.keyCode === 13) {
         if ($("#msg").val().trim() === "") {
           e.preventDefault();
           $("#msg").val("");
           return;
         }
-        const chattingItem = { nickName: $("#nickName").val(), msg: $(".sendBox #msg").val() };
-        socket.emit("chatting", chattingItem);
-        $("#msg").val("");
-        $(".btnSend").removeClass("on");
+        if (e.shiftKey) {
+        } else {
+          const chattingItem = { nickName: $("#nickName").val(), msg: $(".sendBox #msg").val() };
+          socket.emit("chatting", chattingItem);
+          $("#msg").val("");
+          $(".btnSend").removeClass("on");
+          console.log($(".sendBox #msg").val());
+        }
       }
       if ($("#msg").val().trim() !== "") {
         $(".btnSend").addClass("on");
@@ -107,6 +111,7 @@
 
     socket.on("chatting", (data) => {
       const meOrOther = data.nickName === $("#nickName").val() ? "me" : "other";
+      console.log(data.msg);
       $(".chattingBox .list").append(`<li class="${meOrOther}">
             <div class="profile">
               <img src="../images/man.png" alt="" />

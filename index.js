@@ -23,7 +23,7 @@ io.on("connection", (socket) => {
   });
 });
 app.get("/", (req, res) => {
-  res.send("hello node");
+  res.sendFile(path.join(__dirname, "/public/html/chatting.html"));
 });
 app.get("/chatting", (req, res) => {
   //res.send("채팅룸");
